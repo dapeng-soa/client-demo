@@ -20,14 +20,14 @@ public class JavaClientTest {
 //        for (int j = 0; j < 10; j++) {
         long begin = System.currentTimeMillis();
         int i = 0;
-        while (true) {
-            asyncTest(++i);
-            if ((i % 800) == 0) {
-                Thread.sleep(100);
-            }
-            if (i >= 100000) break;
-
-        }
+//        while (true) {
+//            asyncTest(++i);
+//            if ((i % 800) == 0) {
+//                Thread.sleep(10000);
+//            }
+//            if (i >= 100000) break;
+//
+//        }
         Thread.sleep(10000);
         System.out.println("success:" + success.get() + "/failed: " + failed.get());
         System.out.println(i + " times cost:" + (System.currentTimeMillis() - begin));
@@ -58,13 +58,14 @@ public class JavaClientTest {
         request.message = Optional.of("便利店");
         try {
             InvocationContextImpl.Factory.createNewInstance();
-            CompletableFuture<String> future = asyncClient.sayHello(request, 2000);
+            CompletableFuture<String> future = asyncClient.sayHello(request);
             future.exceptionally(ex -> {
                 failed.incrementAndGet();
+                System.out.println(ex.getMessage());
                 return null;
             });
             future.thenAccept(resp -> {
-//                        System.out.println(resp);
+                        System.out.println(resp);
                         success.incrementAndGet();
                     }
             );
